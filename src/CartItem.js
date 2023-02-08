@@ -1,57 +1,61 @@
 import React from 'react';
 
-class CartItem extends React.Component{
+const CartItem = (props) => {
 
-    // constructor(){
-    //     super();
-    //     this.state={
-    //         price:999,
-    //         title:'Phone',
-    //         qty: 1,
-    //         img: ''
-    //     }
+    // // constructor(){
+    // //     super();
+    // //     this.state={
+    // //         price:999,
+    // //         title:'Phone',
+    // //         qty: 1,
+    // //         img: ''
+    // //     }
+    // // }
+
+    // increaseQuantity = () => {
+    //     // this.state.qty +=1;
+    //     // console.log('this', this.state);
+
+    //     // setState form 1
+    //     // this.setState({
+    //     //     qty:this.state.qty +1
+    //     // });
+
+    //     // setState form 2-----------this is for "when we required previous state"
+    //     this.setState((prevState) =>{
+    //         return{
+    //             qty: prevState.qty + 1
+    //         }
+    //     }, () => {
+    //         console.log('this.state', this.state );
+    //     });
     // }
 
-    increaseQuantity = () => {
-        // this.state.qty +=1;
-        // console.log('this', this.state);
 
-        // setState form 1
-        // this.setState({
-        //     qty:this.state.qty +1
-        // });
+    // //for decrease quantity
+    //     decreaseQuantity = () =>{
+    //     const { qty } = this.state;
+    //     if(qty === 0){
+    //         return;
+    //     }
 
-        // setState form 2-----------this is for "when we required previous state"
-        this.setState((prevState) =>{
-            return{
-                qty: prevState.qty + 1
-            }
-        }, () => {
-            console.log('this.state', this.state );
-        });
-    }
-
-
-    //for decrease quantity
-        decreaseQuantity = () =>{
-        const { qty } = this.state;
-        if(qty === 0){
-            return;
-        }
-
-            this.setState((prevState) =>{
-                return{
-                    qty: prevState.qty - 1
-                }
-            });
-        }
+    //         this.setState((prevState) =>{
+    //             return{
+    //                 qty: prevState.qty - 1
+    //             }
+    //         });
+    //     }
 
 
         
-    render(){
-        console.log('this.props', this.props);
         // object distructuring
-        const { price, title, qty } = this.props.product;
+        const { price, title, qty } = props.product;
+        const { 
+            product, 
+            onIncreaseQuantity, 
+            onDecreaseQuantity, 
+            onDeleteProduct 
+        } =props;
 
         return(
             <div className="cart-item">
@@ -65,10 +69,26 @@ class CartItem extends React.Component{
                     <div>Qty: {qty}</div>
                     <div className="cart-item-actions">
                         {/* Button */}
-                        <img alt='increase' className='action-icons' src='https://cdn-icons-png.flaticon.com/512/992/992651.png' onClick={this.increaseQuantity.bind(this)} />
+                        <img
+                          alt='increase' 
+                          className='action-icons' 
+                          src='https://cdn-icons-png.flaticon.com/512/992/992651.png' 
+                          onClick={() => onIncreaseQuantity(product)} 
+                        />
 
-                         <img alt='decrease' className='action-icons' src='https://cdn-icons-png.flaticon.com/512/992/992683.png' onClick={this.decreaseQuantity.bind(this)} />
-                        <img alt='delete' className='action-icons' src='https://cdn-icons-png.flaticon.com/512/1214/1214428.png' />
+                        <img 
+                          alt='decrease' 
+                          className='action-icons' 
+                          src='https://cdn-icons-png.flaticon.com/512/992/992683.png' 
+                          onClick={() => onDecreaseQuantity(product)}
+                        />
+
+                        <img 
+                          alt='delete' 
+                          className='action-icons' 
+                          src='https://cdn-icons-png.flaticon.com/512/1214/1214428.png' 
+                          onClick={() => onDeleteProduct(product.id)} 
+                        />
                     </div>
 
                 </div>
@@ -76,7 +96,6 @@ class CartItem extends React.Component{
 
         );
     }
-}
 
 //add css to image
 const styles={
