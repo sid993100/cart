@@ -19,13 +19,11 @@ class App extends React.Component {
 
   //get data from firebase
   componentDidMount() {
-    
     //fetching all the products from the cloud firestore
     firestore
     //query for fecthing the product which we want as per our query
     .collection("products") //getting all the products
     // .where('price','>=', 999) // after fetching db we should write query
-
     .onSnapshot(snapshot => {  //here we use onSnapshot as a listner(when data is change on database then the the data on web page is automatically updated)
       const products = snapshot.docs.map(doc => {
         const data = doc.data();
@@ -42,38 +40,32 @@ class App extends React.Component {
 }
 
 
-
   handleIncreaseQuantity = (product) => {
     console.log('Heyy please inc the qty of ', product);
     const { products } = this.state;
     const index = products.indexOf(product);
-
     products[index].qty += 1;
-
     this.setState({
       products
     })
   }
+
   handleDecreaseQuantity = (product) => {
     console.log('Heyy please inc the qty of ', product);
     const { products } = this.state;
     const index = products.indexOf(product);
-
     if (products[index].qty === 0) {
       return;
     }
-
     products[index].qty -= 1;
-
     this.setState({
       products
     })
   }
+
   handleDeleteProduct = (id) => {
     const { products } = this.state;
-
     const items = products.filter((item) => item.id !== id); // [{}]
-
     this.setState({
       products: items
     })
@@ -81,32 +73,48 @@ class App extends React.Component {
 
   getCartCount = () => {
     const { products } = this.state;
-
     let count = 0;
-
     products.forEach((product) => {
       count += product.qty;
     })
-
     return count;
   }
 
   getCartTotal = () => {
     const { products } = this.state;
-
     let cartTotal = 0;
-
     products.map((product) => {
       cartTotal = cartTotal + product.qty * product.price
     })
 
     return cartTotal;
   }
+
+  //add product -->button function
+  addProduct = () =>{
+    firebase
+    .firestore()
+    .collection('products')
+    .add({
+      img:'',
+      price:900,
+      qty: 3,
+      title: 'Washing machine'
+    })
+    .then((docRef) => {
+      console.log('Product has been added', docRef);
+    })
+    .catch((error) => {
+      console.log('Error:', error);
+    })
+  }
+
   render () {
     const { products, loading } = this.state;
     return (
       <div className="App">
         <Navbar count={this.getCartCount()} />
+        <button onClick={this.addProduct}>Add Cart Product</button>
         <Cart
           products={products}
           onIncreaseQuantity={this.handleIncreaseQuantity}
