@@ -4,7 +4,6 @@ import Navbar from './Navbar';
 import { firestore } from "./firebase";
 
 
-
 class App extends React.Component {
 
   constructor () {
@@ -38,8 +37,6 @@ class App extends React.Component {
     
     });
 }
-
-
   // handleIncreaseQuantity = (product) => {
   //   console.log('Heyy please inc the qty of ', product);
   //   const { products } = this.state;
@@ -107,10 +104,12 @@ class App extends React.Component {
   }
 
   handleDeleteProduct = (id) => {
-    const { products } = this.state;
+    const {products} = this.state;
+    const index = products.indexOf(id);
+
     // const items = products.filter((item) => item.id !== id); // [{}]
     // this.setState({
-    //   products: items
+    //   products: products
     // })
     const docRef = firestore.collection('products').doc(products[index].id)
 
